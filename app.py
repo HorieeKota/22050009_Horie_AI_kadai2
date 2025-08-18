@@ -1,3 +1,10 @@
+import os
+from matplotlib import font_manager, rcParams
+
+font_path = os.path.join(os.path.dirname(__file__), "fonts", "IPAexGothic.ttf")  # .ttf名を合わせてください
+font_manager.fontManager.addfont(font_path)
+rcParams['font.family'] = font_manager.FontProperties(fname=font_path).get_name()
+
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -160,3 +167,4 @@ with tab3:
     st.divider()
     st.subheader("現在の元データ（npb_stats.csv）を確認")
     st.dataframe(src_df, use_container_width=True)
+
