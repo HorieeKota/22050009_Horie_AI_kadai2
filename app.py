@@ -7,44 +7,6 @@ from logic import (
     filter_table, team_trend, snapshot_to_db, load_db
 )
 
-import os
-from pathlib import Path
-import streamlit as st
-from matplotlib import font_manager, rcParams
-import matplotlib
-matplotlib.rcParams["axes.unicode_minus"] = False  # －の豆腐回避
-
-HERE = Path(__file__).resolve().parent
-
-# 同階層の fonts/ を探す（app.py と同じフォルダに置く想定）
-CANDIDATES = [
-    HERE / "fonts" / "IPAexGothic.ttf",
-    HERE / "fonts" / "NotoSansJP-Regular.ttf",
-    HERE / "fonts" / "NotoSansJP-Medium.ttf",
-]
-
-def setup_japanese_font():
-    for p in CANDIDATES:
-        if p.exists():
-            try:
-                font_manager.fontManager.addfont(str(p))
-                name = font_manager.FontProperties(fname=str(p)).get_name()
-                rcParams["font.family"] = name
-                st.caption(f"📝 Using font: {name} ({p.name})")
-                return True
-            except Exception as e:
-                st.warning(f"フォント読み込み失敗: {p.name} / {e}")
-    # 見つからなかった場合のフォールバック（落とさない）
-    rcParams["font.family"] = ["Meiryo", "Yu Gothic", "MS Gothic",
-                               "Noto Sans CJK JP", "Hiragino Sans",
-                               "DejaVu Sans", "sans-serif"]
-    # デバッグ表示（Cloudでの実体パス確認）
-    st.warning("フォントファイルが見つかりませんでした。fonts/ に .ttf を置いて再デプロイしてください。")
-    st.caption(f"検索ディレクトリ: {HERE}")
-    return False
-
-setup_japanese_font()
-
 
 # ===== 見た目設定 =====
 matplotlib.rcParams["font.family"] = ["MS Gothic", "Yu Gothic", "Meiryo", "sans-serif"]
@@ -199,5 +161,6 @@ with tab3:
     st.divider()
     st.subheader("現在の元データ（npb_stats.csv）を確認")
     st.dataframe(src_df, use_container_width=True)
+
 
 
